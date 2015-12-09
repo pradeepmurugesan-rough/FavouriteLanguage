@@ -3,6 +3,7 @@
 #####Technologies used
 
 server side : Java, Jersey
+
 client side : Angular Js, Bootstrap.
 
 The application is deployed [here] (https://sheltered-hamlet-1151.herokuapp.com/)
