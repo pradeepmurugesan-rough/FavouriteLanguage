@@ -46,4 +46,12 @@ public class FavouriteLanguageServiceTest extends JerseyTest {
         FavouriteLanguageResponse favouriteLanguageResponse = TestUtils.jsonToObject(responseJson, FavouriteLanguageResponse.class);
         Assert.assertNotNull(favouriteLanguageResponse.getErrorMessage());
     }
+
+    @Test
+    public void emptyReposUserTest() throws IOException {
+        Response response = target("/favouriteLanguage/pradeepmuru").request(MediaType.APPLICATION_JSON).get();
+        String responseJson = response.readEntity(String.class);
+        FavouriteLanguageResponse favouriteLanguageResponse = TestUtils.jsonToObject(responseJson, FavouriteLanguageResponse.class);
+        Assert.assertNotNull(favouriteLanguageResponse.getErrorMessage());
+    }
 }
