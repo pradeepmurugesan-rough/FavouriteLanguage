@@ -24,4 +24,25 @@ public class Util {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper.readValue(json, TypeFactory.defaultInstance().constructCollectionType(ArrayList.class, Repository.class));
     }
+
+    public static boolean isAllNull(ArrayList<String> list) {
+        boolean isAllNull = true;
+        for(String item : list) {
+            if(item != null) {
+                isAllNull = false;
+                break;
+            }
+        }
+        return isAllNull;
+    }
+
+    public static ArrayList removeNulls(ArrayList<String> list) {
+        ArrayList<String> validLanguages = new ArrayList<String>();
+        for(String item : list) {
+            if(item != null) {
+                validLanguages.add(item);
+            }
+        }
+        return validLanguages;
+    }
 }

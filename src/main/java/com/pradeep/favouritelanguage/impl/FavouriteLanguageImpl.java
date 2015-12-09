@@ -4,6 +4,7 @@ import com.pradeep.favouritelanguage.datamodel.Repository;
 import com.pradeep.favouritelanguage.exception.FavouriteLanguageException;
 import com.pradeep.favouritelanguage.repository.GitHub;
 import com.pradeep.favouritelanguage.repository.VersionControlSystem;
+import com.pradeep.favouritelanguage.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +35,16 @@ public class FavouriteLanguageImpl {
         counter = countLanguages(repositories);
         List<String> topRepos =  getTopLanguages();
         validateRepos(topRepos);
+        topRepos = Util.removeNulls((ArrayList<String>) topRepos);
         return topRepos;
     }
 
     private void validateRepos(List<String> topRepos) throws FavouriteLanguageException {
         if(topRepos.size() == 0) {
-            throw new FavouriteLanguageException("The user has no repo with Languages");
+            throw new FavouriteLanguageException("The user has no repos associated.");
         }
-        if(topRepos.contains(null)) {
-            throw new FavouriteLanguageException("The user has one more repos with null as Language");
+        if(Util.isAllNull((ArrayList<String>) topRepos)) {
+            throw new FavouriteLanguageException("The user has one or more repos with no language specified");
         }
     }
 
@@ -76,6 +78,7 @@ public class FavouriteLanguageImpl {
                 favouriteLanguages.add(entry.getKey());
             }
         }
+        logger.debug("Top languages are found to be " + favouriteLanguages);
         return favouriteLanguages;
     }
 }

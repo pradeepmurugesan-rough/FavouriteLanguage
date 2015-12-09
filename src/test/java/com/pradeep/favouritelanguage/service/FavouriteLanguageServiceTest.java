@@ -40,6 +40,14 @@ public class FavouriteLanguageServiceTest extends JerseyTest {
     }
 
     @Test
+    public void emptyReposUserTest() throws IOException {
+        Response response = target("/favouriteLanguage/pradeepmuru").request(MediaType.APPLICATION_JSON).get();
+        String responseJson = response.readEntity(String.class);
+        FavouriteLanguageResponse favouriteLanguageResponse = TestUtils.jsonToObject(responseJson, FavouriteLanguageResponse.class);
+        Assert.assertNotNull(favouriteLanguageResponse.getErrorMessage());
+    }
+
+    @Test
     public void nullLanguageTest() throws IOException {
         Response response = target("/favouriteLanguage/sapna14").request(MediaType.APPLICATION_JSON).get();
         String responseJson = response.readEntity(String.class);
@@ -48,10 +56,12 @@ public class FavouriteLanguageServiceTest extends JerseyTest {
     }
 
     @Test
-    public void emptyReposUserTest() throws IOException {
-        Response response = target("/favouriteLanguage/pradeepmuru").request(MediaType.APPLICATION_JSON).get();
+    public void validAndNullLanguageTest() throws IOException {
+        Response response = target("/favouriteLanguage/Nisha-O").request(MediaType.APPLICATION_JSON).get();
         String responseJson = response.readEntity(String.class);
         FavouriteLanguageResponse favouriteLanguageResponse = TestUtils.jsonToObject(responseJson, FavouriteLanguageResponse.class);
-        Assert.assertNotNull(favouriteLanguageResponse.getErrorMessage());
+        Assert.assertNull(favouriteLanguageResponse.getErrorMessage());
     }
+
+
 }

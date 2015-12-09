@@ -28,8 +28,10 @@ public class FavouriteLanguageService {
             List<String> repos = new FavouriteLanguageImpl().getFavouriteLanguages(user);
             return Response.ok(new FavouriteLanguageResponse(repos, null)).build();
         } catch (FavouriteLanguageException e) {
+            logger.error("FavouriteLanguageException occured while computing languages " , e);
             return Response.ok(new FavouriteLanguageResponse(null, e.getMessage())).build();
         } catch (Exception e) {
+            logger.error("General Error occured while computing languages " , e);
             return Response.serverError().entity(new FavouriteLanguageResponse(null, e.getMessage())).build();
         }
 
