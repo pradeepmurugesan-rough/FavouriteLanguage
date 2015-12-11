@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface VersionControlSystem {
     public List<Repository> getRepositories(String username) throws FavouriteLanguageException;
+    public List<String> getRepositoryLanguages(String username) throws FavouriteLanguageException ;
 }

@@ -40,4 +40,14 @@ public class GitHub implements VersionControlSystem {
             throw new FavouriteLanguageException("User Name is Invalid");
         }
     }
+
+    public List<String> getRepositoryLanguages(String username) throws FavouriteLanguageException {
+        List<Repository> repositories = this.getRepositories(username);
+        List<String> repositoryLanguages = new ArrayList<String>();
+        for (Repository repository : repositories) {
+            repositoryLanguages.add(repository.getLanguage());
+        }
+        logger.debug("Languges after parsing the repo " + repositoryLanguages);
+        return repositoryLanguages;
+    }
 }

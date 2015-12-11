@@ -17,68 +17,27 @@ import java.util.Map.Entry;
  * Created by Pmuruge on 12/8/2015.
  */
 public class FavouriteLanguageImpl {
-    private Integer maxCount;
-    private HashMap<String, Integer> counter;
-    private List<String> favouriteLanguages;
     private VersionControlSystem vcs;
     private static final Logger logger = LoggerFactory.getLogger(FavouriteLanguageImpl.class);
 
     public FavouriteLanguageImpl() {
-        counter = new HashMap<String, Integer>();
-        maxCount = 0;
-        favouriteLanguages = new ArrayList<String>();
         vcs = new GitHub();
     }
 
-    public List<String> getFavouriteLanguages(String username) throws FavouriteLanguageException {
-        List<Repository> repositories = vcs.getRepositories(username);
-        counter = countLanguages(repositories);
-        List<String> topRepos =  getTopLanguages();
-        validateRepos(topRepos);
-        topRepos = Util.removeNulls((ArrayList<String>) topRepos);
-        return topRepos;
+    public List<String> getFavouriteLanguages(String username) throws FavouriteLanguageException, Exception {
+        List<String> repositoryLanguages = vcs.getRepositoryLanguages(username);
+        validateLanguages(repositoryLanguages);
+        repositoryLanguages = Util.removeNulls((ArrayList<String>) repositoryLanguages);
+        Counter counter = new Counter(repositoryLanguages);
+        return counter.getMaxKeys();
     }
 
-    private void validateRepos(List<String> topRepos) throws FavouriteLanguageException {
-        if(topRepos.size() == 0) {
+    private void validateLanguages(List<String> repositoryLanguages) throws FavouriteLanguageException {
+        if(repositoryLanguages.size() == 0) {
             throw new FavouriteLanguageException("The user has no repos associated.");
         }
-        if(Util.isAllNull((ArrayList<String>) topRepos)) {
+        if(Util.isAllNull((ArrayList<String>) repositoryLanguages)) {
             throw new FavouriteLanguageException("The user has one or more repos with no language specified");
         }
-    }
-
-    public HashMap<String, Integer> countLanguages(List<Repository> repositories) {
-        for (Repository repository : repositories) {
-            String repoLanguage = repository.getLanguage();
-            incrementCount(repoLanguage);
-            setMax(repoLanguage);
-        }
-        logger.debug("The repository counter is " + counter.toString());
-        return counter;
-    }
-
-    private void setMax(String repoLanguage) {
-        if(counter.get(repoLanguage) > maxCount) {
-            maxCount = counter.get(repoLanguage);
-        }
-    }
-
-    private void incrementCount(String repoLanguage) {
-        if(counter.containsKey(repoLanguage)) {
-            counter.put(repoLanguage, counter.get(repoLanguage) + 1);
-        } else {
-            counter.put(repoLanguage, 1);
-        }
-    }
-
-    private List<String> getTopLanguages() {
-        for (Entry<String, Integer> entry : counter.entrySet()) {
-            if(entry.getValue() == maxCount) {
-                favouriteLanguages.add(entry.getKey());
-            }
-        }
-        logger.debug("Top languages are found to be " + favouriteLanguages);
-        return favouriteLanguages;
     }
 }
