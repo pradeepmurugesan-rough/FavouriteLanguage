@@ -4,6 +4,7 @@ import com.pradeep.favouritelanguage.datamodel.Repository;
 import com.pradeep.favouritelanguage.exception.FavouriteLanguageException;
 import com.pradeep.favouritelanguage.repository.GitHub;
 import com.pradeep.favouritelanguage.repository.VersionControlSystem;
+import com.pradeep.favouritelanguage.util.Constants;
 import com.pradeep.favouritelanguage.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,8 @@ public class FavouriteLanguageImpl {
     private VersionControlSystem vcs;
     private static final Logger logger = LoggerFactory.getLogger(FavouriteLanguageImpl.class);
 
-    public FavouriteLanguageImpl() {
-        vcs = new GitHub();
+    public FavouriteLanguageImpl(VersionControlSystem vcs) {
+        this.vcs = vcs;
     }
 
     public List<String> getFavouriteLanguages(String username) throws FavouriteLanguageException, Exception {
@@ -34,10 +35,10 @@ public class FavouriteLanguageImpl {
 
     private void validateLanguages(List<String> repositoryLanguages) throws FavouriteLanguageException {
         if(repositoryLanguages.size() == 0) {
-            throw new FavouriteLanguageException("The user has no repos associated.");
+            throw new FavouriteLanguageException(Constants.ERROR_EMPTY_REPO);
         }
         if(Util.isAllNull((ArrayList<String>) repositoryLanguages)) {
-            throw new FavouriteLanguageException("The user has one or more repos with no language specified");
+            throw new FavouriteLanguageException(Constants.ERROR_NULL_REPO);
         }
     }
 }

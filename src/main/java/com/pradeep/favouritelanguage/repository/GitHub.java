@@ -6,6 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.pradeep.favouritelanguage.datamodel.Repository;
 import com.pradeep.favouritelanguage.exception.FavouriteLanguageException;
+import com.pradeep.favouritelanguage.util.Constants;
 import com.pradeep.favouritelanguage.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class GitHub implements VersionControlSystem {
     public void validateResponse(HttpResponse<JsonNode> response) throws FavouriteLanguageException {
         logger.info("The status from git api is " + response.getStatus());
         if(response.getStatus() == 404 ) {
-            throw new FavouriteLanguageException("User Name is Invalid");
+            throw new FavouriteLanguageException(Constants.ERROR_USER_INVALID);
         }
     }
 

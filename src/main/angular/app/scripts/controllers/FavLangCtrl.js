@@ -17,6 +17,7 @@ angular.module('favLangApp')
 		function(data){
 			blockUI.stop();
 			viewModel.showResult = true;
+            viewModel.favLangForm.$setPristine();
 			if(data.errorMessage) {
 				viewModel.showError = true;
 				viewModel.showSuccess = false;

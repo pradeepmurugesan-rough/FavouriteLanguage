@@ -3,6 +3,7 @@ package com.pradeep.favouritelanguage.service;
 import com.pradeep.favouritelanguage.datamodel.FavouriteLanguageResponse;
 import com.pradeep.favouritelanguage.exception.FavouriteLanguageException;
 import com.pradeep.favouritelanguage.impl.FavouriteLanguageImpl;
+import com.pradeep.favouritelanguage.repository.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ public class FavouriteLanguageService {
     @Path("/{user}")
     public Response getFavouriteLanguage(@PathParam("user") String user) {
         try {
-            List<String> repos = new FavouriteLanguageImpl().getFavouriteLanguages(user);
+            List<String> repos = new FavouriteLanguageImpl(new GitHub()).getFavouriteLanguages(user);
             return Response.ok(new FavouriteLanguageResponse(repos, null)).build();
         } catch (FavouriteLanguageException e) {
             logger.error("FavouriteLanguageException occured while computing languages " , e);
